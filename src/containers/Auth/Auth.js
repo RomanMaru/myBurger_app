@@ -3,7 +3,7 @@ import Input from '../../components/UI/Input/Input'
 import Button from '../../components/UI/Button/Button'
 import classes from './Auth.css'
 import * as actions from '../../store/actions/index'
-import {connect} from 'react-redux'
+import { connect } from 'react-redux'
 class Auth extends Component {
     state = {
         controls: {
@@ -35,7 +35,8 @@ class Auth extends Component {
                 valid: false,
                 touched: false
             }
-        }
+        },
+        isSingUp: true
     }
 
     checkValidity(value, rules) {
@@ -43,7 +44,7 @@ class Auth extends Component {
         if (!rules) {
             return true;
         }
-        
+
         if (rules.required) {
             isValid = value.trim() !== '' && isValid;
         }
@@ -79,7 +80,7 @@ class Auth extends Component {
                 touched: true
             }
         }
-        this.setState({controls: updatedControls})
+        this.setState({ controls: updatedControls })
     }
 
     submitHandler = (event) => {
@@ -87,6 +88,11 @@ class Auth extends Component {
         this.props.onAuth(this.state.controls.email.value, this.state.controls.password.value)
     }
 
+    switchAuthModeHandler = () => {
+        this.setState(prevState => {
+            return { isSingUp: !prevState.isSingUp }
+        })
+    }
     render() {
         const formElementsArray = []
         for (let key in this.state.controls) {
@@ -114,6 +120,10 @@ class Auth extends Component {
                     {form}
                     <Button btnType="Success" >SUBMIT</Button>
                 </form>
+                <Button
+                    btnType='Danger'
+                    clicked={this.switchAuthModeHandler}
+                >SWITCH TO {this.state.isSingUp ? 'SINGIN' : 'SINGUP'}</Button>
             </div>
         )
     }
