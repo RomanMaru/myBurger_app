@@ -5,7 +5,6 @@ import { connect } from 'react-redux'
 
 class Logout extends Component {
     componentDidMount() {
-        console.log
         this.props.onLogout();
     }
 
