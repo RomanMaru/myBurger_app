@@ -55,7 +55,7 @@ export const auth = (email, password, isSingUP) => {
             .then(response => {
                 console.log(response)
                 const expirationDate = new Date(new Date().getTime() + response.data.expiresIn * 1000)
-                localStorage.setItem('token',  response.data.idToken)
+                localStorage.setItem('token', response.data.idToken)
                 localStorage.setItem('expirationDate', expirationDate)
                 localStorage.setItem('userId', response.data.localId)
                 dispatch(authSuccess(response.data.idToken, response.data.localId))
@@ -81,15 +81,14 @@ export const authCheckState = () => {
         if (!token) {
             dispatch(logOut())
         } else {
-            const expirationDate = localStorage.getItem('expirationDate')
-            if (expirationDate > new Date() ) {
+            const expirationDate = new Date(localStorage.getItem('expirationDate'))
+            if (expirationDate <= new Date()) {
                 dispatch(logOut())
             } else {
                 const userId = localStorage.getItem('userId')
-                 dispatch(authSuccess(token, userId))
-                 dispatch(checkAuthTimeout(expirationDate.getSeconds() - new Date().getSeconds()))
+                dispatch(authSuccess(token, userId))
+                dispatch(checkAuthTimeout((expirationDate.getTime() - new Date().getTime()) / 1000))
             }
-           
         }
     }
 }
