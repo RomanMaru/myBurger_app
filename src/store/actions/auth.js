@@ -1,5 +1,5 @@
 import * as actionTypes from './actionTypes'
-import axios from 'axios'
+//import axios from 'axios'
 
 export const authStart = () => {
   return {
@@ -38,37 +38,18 @@ export const logoutSucceed = () => {
 }
 
 export const checkAuthTimeout = (expirationTime) => {
-  return  {
+  return {
     type: actionTypes.AUTH_CHECK_TIMEOUT,
-    expirationTime: 10
+    expirationTime: expirationTime
   }
 }
 
 export const auth = (email, password, isSingUP) => {
-
-  return dispatch => {
-    dispatch(authStart())
-    const authData = {
-      email: email,
-      password: password,
-      returnSecureToken: true
-    }
-    let url = 'https://identitytoolkit.googleapis.com/v1/accounts:signUp?key=AIzaSyBSmuvOeXSCxF8aRvtS3Yv4sJsGU1CikcQ'
-    if (!isSingUP) {
-      url = 'https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?key=AIzaSyBSmuvOeXSCxF8aRvtS3Yv4sJsGU1CikcQ'
-    }
-    axios.post(url, authData)
-      .then(response => {
-        const expirationDate = new Date(new Date().getTime() + response.data.expiresIn * 1000)
-        localStorage.setItem('token', response.data.idToken)
-        localStorage.setItem('expirationDate', expirationDate)
-        localStorage.setItem('userId', response.data.localId)
-        dispatch(authSuccess(response.data.idToken, response.data.localId))
-        dispatch(checkAuthTimeout(response.data.expiresIn))
-      })
-      .catch(err => {
-        dispatch(authFail(err.response.data.error))
-      })
+  return {
+    type: actionTypes.AUTH_USER,
+    email: email,
+    password: password,
+    isSingUP: isSingUP
   }
 }
 
@@ -80,19 +61,7 @@ export const setAuthRedirectPath = (path) => {
 }
 
 export const authCheckState = () => {
-  return dispatch => {
-    const token = localStorage.getItem('token')
-    if (!token) {
-      dispatch(logOut())
-    } else {
-      const expirationDate = new Date(localStorage.getItem('expirationDate'))
-      if (expirationDate <= new Date()) {
-        dispatch(logOut())
-      } else {
-        const userId = localStorage.getItem('userId')
-        dispatch(authSuccess(token, userId))
-        dispatch(checkAuthTimeout((expirationDate.getTime() - new Date().getTime()) / 1000))
-      }
-    }
+  return {
+    type: actionTypes.AUTH_CHECK_INITIAL_STATE
   }
 }
