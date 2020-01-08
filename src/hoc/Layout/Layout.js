@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useState } from 'react';
 import { connect } from 'react-redux'
 import Aux from '../Auxiliary/Auxiliary';
 import classes from './Layout.css';
@@ -6,7 +6,8 @@ import Toolbar from '../../components/Navigation/Toolbar/Toolbar';
 import SideDrawer from '../../components/Navigation/SideDrawer/SideDrawer';
 
 const layout = props => {
-  const [sideDrawerIsVisible, setSideDrawerIsVisible] = useEffect(false)
+
+  const [sideDrawerIsVisible, setSideDrawerIsVisible] = useState(false)
 
   const sideDrawerClosedHandler = () => {
     setSideDrawerIsVisible(false)
