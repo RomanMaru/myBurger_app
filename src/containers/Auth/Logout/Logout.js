@@ -4,16 +4,19 @@ import { Redirect } from 'react-router-dom'
 import { connect } from 'react-redux'
 
 const logout = props => {
+  const { onLogout } = props
+
   useEffect(() => {
-    props.onLogout()
-  }, [])
-        return <Redirect to="/" />
+    onLogout()
+  }, [onLogout])
+
+  return <Redirect to="/" />
 }
 
 const mapDispatchToProps = dispatch => {
-    return {
-        onLogout: () => dispatch(actions.logOut()),
-    }
+  return {
+    onLogout: () => dispatch(actions.logOut()),
+  }
 }
 
 export default connect(null, mapDispatchToProps)(logout)

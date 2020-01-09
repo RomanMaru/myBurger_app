@@ -14,9 +14,10 @@ const burgerBuilder = props => {
 
   const [purchasing, setPurchasing] = useState(false)
 
+  const {onInitIngredients} = props
   useEffect(() => {
-    props.onInitIngredients()
-  }, [])
+    onInitIngredients()
+  }, [onInitIngredients])
 
   const updatePurchaseState = (ingredients) => {
     const sum = Object.keys(ingredients)
@@ -79,7 +80,7 @@ const burgerBuilder = props => {
       purchaseCancelled={purchaseCancelHandler}
       purchaseContinued={purchaseContinueHandler} />;
   }
-  // {salad: true, meat: false, ...}
+
   return (
     <Aux>
       <Modal show={purchasing} modalClosed={purchaseCancelHandler}>

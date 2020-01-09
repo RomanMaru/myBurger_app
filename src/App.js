@@ -18,9 +18,11 @@ const Auth = React.lazy(() => {
   return import('./containers/Auth/Auth')
 })
 const app = props => {
+  const {onTryAutoSingUp} = props
+
   useEffect(() => {
-    props.onTryAutoSingUp()
-  }, [])
+    onTryAutoSingUp()
+  }, [onTryAutoSingUp])
 
   let routes = (
     <Switch>
